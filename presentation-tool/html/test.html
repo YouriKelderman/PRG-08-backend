@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Slides Control</title>
+    <script src="https://apis.google.com/js/api.js"></script>
+</head>
+<body>
+<h1>Google Slides Control</h1>
+<iframe id="slides-iframe" src="https://docs.google.com/presentation/d/e/2PACX-1vSqXatJ-jdYYnQrb2q9IMTUYSuY74i-7qOd3UyfPjJ5scT2ysK2X-jNderyZJOR-u7fMB4gB_adn2wL/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<button onclick="goToNextSlide()">Next Slide</button>
+
+<script>
+    // Initialize the Google Slides API
+    function initSlidesAPI() {
+        gapi.load('client:auth2', function() {
+            gapi.client.init({
+                apiKey: 'mykey',
+                discoveryDocs: ["https://slides.googleapis.com/$discovery/rest?version=v1"]
+            }).then(function() {
+                // API is ready
+                console.log('Google Slides API initialized');
+            });
+        });
+    }
+
+    // Function to go to the next slide
+    function goToNextSlide() {
+        gapi.client.slides.presentations.get({
+            presentationId: 'id'
+        }).then(function(response) {
+            let slides = response.result.slides;
+            let currentSlideIndex = 0; // Set the initial slide index
+
+            // Find the current slide index
+            for (var i = 0; i < slides.length; i++) {
+                if (slides[i].objectId === 'current-slide-id') {
+                    currentSlideIndex = i;
+                    break;
+                }
+            }
+
+            // Go to the next slide
+            var nextSlideIndex = (currentSlideIndex + 1) % slides.length;
+            var nextSlideId = slides[nextSlideIndex].objectId;
+            document.getElementById('slides-iframe').contentWindow.postMessage({ type: 'goToSlide', slideId: nextSlideId }, '*');
+        });
+    }
+
+    // Listen for messages from the iframe
+    window.addEventListener('message', function(event) {
+        if (event.data.type === 'slideChanged') {
+            console.log('Current slide changed:', event.data.slideId);
+        }
+    });
+
+    // Load the Google Slides API
+    initSlidesAPI();
+</script>
+</body>
+</html>

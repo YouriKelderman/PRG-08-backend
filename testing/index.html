@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hand Detection</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js"
+            crossorigin="anonymous"></script>
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+
+</head>
+<body>
+
+<main>
+    <section id="demos" class="invisible">
+        <div>
+            <button id="testButton" class="button">
+                Start Testing
+            </button>
+            <button id="fillTable" class="button">
+                Calculate Confusion Matrix
+            </button>
+            <p id="test"></p>
+            <p id="accuracy"></p>
+            <p id="times"></p>
+
+        </div>
+        <div id="testDiv">
+            <table id="table">
+                <tr id="topRow">
+                </tr>
+            </table>
+        </div>
+    </section>
+    <!-- partial -->
+    <script type="module" src="script.js"></script>
+
+</main>
+</body>
+</html>
